@@ -216,6 +216,7 @@ $RECYCLE.BIN/
 *.lnk
 dev.env
 prod.env
+package-lock.json
 # BDD
 #postgres_data
 mysql_data
