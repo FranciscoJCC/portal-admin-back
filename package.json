@@ -1,0 +1,18 @@
+{
+  "name": "portal-admin-back",
+  "version": "1.0.0",
+  "description": "Portal de administación de usuarios y plataformas",
+  "main": "index.js",
+  "scripts": {
+    "dev": "SET NODE_ENV=dev&& nodemon server.js",
+    "prod": "SET NODE_ENV=prod&& nodemon server.js"
+  },
+  "author": "Francisco Cervantes",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4",
+    "sequelize": "^6.37.3"
+  }
+}
