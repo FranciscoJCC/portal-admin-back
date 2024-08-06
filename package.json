@@ -17,10 +17,18 @@
   "author": "Francisco Cervantes",
   "license": "ISC",
   "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "moment-timezone": "^0.5.45",
     "mysql2": "^3.11.0",
     "nodemon": "^3.1.4",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
     "sequelize": "^6.37.3"
   },
   "devDependencies": {

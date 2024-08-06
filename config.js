@@ -13,5 +13,6 @@ module.exports = {
     MYSQL_PASSWORD: process.env.MYSQL_PASSWORD || '',
     MYSQL_HOST: process.env.MYSQL_HOST || '',
     MYSQL_PORT: process.env.MYSQL_PORT || '',
-    MYSQL_DB_ACTUAR : process.env.MYSQL_DB_ACTUAR || ''
+    MYSQL_DB : process.env.MYSQL_DB || '',
+    JWT_TOKEN : process.env.JWT_TOKEN || '',
 }
