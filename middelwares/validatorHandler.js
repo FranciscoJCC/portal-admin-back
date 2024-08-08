@@ -2,7 +2,7 @@ const boom = require('@hapi/boom');
 
 function validatorHandler(schema, property){
     return (req, res, next) => {
-        console.log(req[property]);
+        
         let data = null;
         
         if(property === 'bodyForm'){

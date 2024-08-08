@@ -1,11 +1,11 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const config = require('../../config');
-const validatorHandler = require('./../../middelwares/validatorHandler');
-const { loginSchema } = require('../../schemas/panelAdmin/auth.schema');
+const config = require('../../../config');
+const validatorHandler = require('./../../../middelwares/validatorHandler');
+const { loginSchema } = require('../../../schemas/panelAdmin/auth.schema');
 
-const AuthService = require('../../servivces/panelAdmin/auth.service');
+const AuthService = require('../../../servivces/panelAdmin/auth.service');
 
 
 const router = express.Router();
@@ -18,7 +18,7 @@ router.post('/login',
         try {
             const user = req.user;
             
-            res.status(200).json(await authService.signToken(user));
+            res.status(200).json(authService.signToken(user));
         } catch (error) {
             next(error);
         }

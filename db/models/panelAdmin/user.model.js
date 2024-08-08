@@ -15,6 +15,15 @@ const UserSchema = {
         allowNull: false,
         type: DataTypes.STRING(150),
     },
+    lastName: {
+        field: 'last_name',
+        allowNull: false,
+        type: DataTypes.STRING(100),
+    },
+    phone: {
+        allowNull: true,
+        type: DataTypes.STRING(15)
+    },
     email: {
         allowNull: false,
         unique: true,
@@ -26,8 +35,8 @@ const UserSchema = {
     },
     status: {
         allowNull: false,
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
+        type: DataTypes.SMALLINT(1),
+        defaultValue: 1
     },
     createdAt: {
         field: 'created_at',
@@ -63,9 +72,11 @@ class User extends Model {
                     user.password = password;
                 },
                 beforeUpdate: async(user, options) => {
-                    const password = await bcrypt.hash(user.password, 10);
+                    if(user.password){
+                        const password = await bcrypt.hash(user.password, 10);
 
-                    user.password = password;
+                        user.password = password;
+                    }
                 }
             },
             defaultScope: {

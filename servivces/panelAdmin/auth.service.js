@@ -27,7 +27,7 @@ class AuthService {
     }
 
     //Firmamos un token
-    async signToken(user){
+    signToken(user){
         const payload = {
             sub: user.id,
             role: 'admin' //Mejorar

@@ -1,13 +1,15 @@
 const express = require('express');
 const config = require('./config');
+const cors = require('cors');
 const routerApi = require('./routes/v1/index');
-const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middelwares/error.handler');
+
 var opts;
 var requiredHttps = 'http';
 const API_PORT = config.API_PORT;
 
-/* console.log("user",config.MYSQL_USER); */
+
 var app = express();
+app.use(cors()); //Agregar ips
 app.use(express.json());
 
 const server = require(requiredHttps).createServer(opts, app);
@@ -18,15 +20,14 @@ app.get('/api', (req, res) => {
 
 //Auth
 require('./utils/auth')
-
+//Router API    
 routerApi(app);
 
-//Middlewares, deben ir despues del routerApi
-app.use(logErrors);
-app.use(ormErrorHandler);
-app.use(boomErrorHandler);
-app.use(errorHandler);
+
+if(config.NODE_ENV == 'dev'){
+    console.log("API MODE ENV");
+}
 
 server.listen(API_PORT, () => {
-    console.log(`Listening at: http://localhost:${API_PORT}/api`);
+    console.log(`Listening at: ${config.PATH_SERVER}:${API_PORT}/api`);
 });

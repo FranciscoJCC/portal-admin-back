@@ -1,6 +1,7 @@
 const boom = require('@hapi/boom');
 
 const sequelizePortalAdmin = require('./../../libs/panelAdmin.sequelize');
+const { Op } = require('sequelize');
 
 class UserService {
     constructor(){}
@@ -9,11 +10,28 @@ class UserService {
 
         const limit = (query.limit) ? parseInt(query.limit) : 10;
         const offset = (query.offset) ? parseInt(query.offset) : 0;
+        const name = query.name;
+        const status = query.status;
 
         let options = {
+            where: {},
+            order: [[ 'id', 'DESC' ]],
             limit,
             offset
         }
+
+        if(name && name !== "" && name !== undefined){
+            options.where.name = {
+                [Op.like] : `%${name}%`
+            }
+        }
+
+        if(status && status !== "" && status !== undefined){
+            options.where.status = {
+                [Op.eq] : status
+            }
+        }
+
         const data = await sequelizePortalAdmin.models.User.findAndCountAll(options);
 
         const totalRecords = data.count;

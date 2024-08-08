@@ -1,21 +1,27 @@
 const express = require('express');
-const validatorHandler = require('../../middelwares/validatorHandler');
-const UserService = require('./../../servivces/panelAdmin/users.service');
-const { getUserSchema, createUserSchema, updateUserSchema } = require('./../../schemas/panelAdmin/user.schema');
+const validatorHandler = require('../../../middelwares/validatorHandler');
+const passport = require('passport');
+const verifyToken = require('../../../middelwares/verifyToken.handler');
+const UserService = require('../../../servivces/panelAdmin/users.service');
+const { getUserSchema, createUserSchema, updateUserSchema } = require('../../../schemas/panelAdmin/user.schema');
 
 
 const router = express.Router();
 const userService = new UserService();
 
-router.get('/', async(req, res, next) => {
-    try {
-        const users = await userService.list(req.query);
+router.get('/',
+    //verifyToken,
+    //passport.authenticate('jwt', { session: false }), 
+    async(req, res, next) => {
+        try {
+            const users = await userService.list(req.query);
 
-        res.status(200).json(users);
-    } catch (error) {
-        next(error);
+            res.status(200).json(users);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 router.get('/:id',
     validatorHandler(getUserSchema, 'params'),
@@ -36,7 +42,7 @@ router.post('/',
     validatorHandler(createUserSchema, 'body'),
     async (req, res, next) => {
         try {
-            console.log("REQc: ", req.body);
+            
             const data = req.body;
 
             const user = await userService.create(data);
@@ -65,10 +71,18 @@ router.patch('/:id',
     }
 )
 
-router.delete('/',
+router.delete('/:id',
     validatorHandler(getUserSchema, 'params'),
     async(req, res, next) => {
+        try {
+            const { id } = req.params;
 
+            const user = await userService.delete(id);
+
+            res.status(200).json({ "status" : true, "message" : `El usuario con id: ${user.id} se ha desactivado`})
+        } catch (error) {
+        next(error);   
+        }
     }
 )
 
