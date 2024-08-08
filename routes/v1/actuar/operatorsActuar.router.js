@@ -1,7 +1,10 @@
 const express = require('express');
 const validatorHandler = require('../../../middelwares/validatorHandler');
+const validateFileHandler = require('../../../middelwares/validateFile.handler');
+const { uploadFiles, returnPath } = require('../../../utils/multer');
 const OperatorActuarService = require('../../../servivces/actuar/operatorsActuar.service');
 const { getOperatorActuarSchema, createOperatorActuarSchema, updateOperatorActuarSchema } = require('../../../schemas/actuar/operator.schema');
+
 
 const router = express.Router();
 const operatorActuarService = new OperatorActuarService();
@@ -49,16 +52,31 @@ router.patch('/:id',
 )
 
 router.patch('/updateProfileImage/:id',
+    uploadFiles.array('files'),
     validatorHandler(getOperatorActuarSchema, 'params'),
     async (req, res, next) => {
         try {
             const { id } = req.params;
-            const data = req.file;
-            console.log(req.file);
+            const file = req.files[0];
 
-            res.status(200).json(data);
+            const updateOperator = await operatorActuarService.updateProfileImage(id, file.filename);
+
+            res.status(200).json(updateOperator);
         } catch (error) {
+            next(error)
+        }
+    }
+)
+
+router.get('/getProfileImage',
+    validateFileHandler,
+    async (req, res, next) => {
+        try {
+            const file = req.body.filename;
             
+            res.sendFile(await returnPath(file));
+        } catch (error) {
+            next(error);
         }
     }
 )

@@ -1,4 +1,5 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
+const path = require('path');
 const PATH_FILES = '\\\\192.168.1.229\\Desarrollos\\actuarsustentable\\'
 
 const OPERATOR_ACTUAR_TABLE = 'operators';
@@ -78,10 +79,6 @@ const OperatorActuarSchema = {
         field: 'profile_image',
         allowNull: true,
         type: DataTypes.STRING(35),
-        get(){
-            const rawValue = `${PATH_FILES}${this.getDataValue('profileImage')}`;
-            return rawValue;
-        }
     },
     license: {
         allowNull: true,

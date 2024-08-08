@@ -19,4 +19,8 @@ module.exports = {
     MYSQL_DB_ACTUAR: process.env.MYSQL_DB_ACTUAR || '',
     JWT_TOKEN : process.env.JWT_TOKEN || '',
     PATH_SERVER: process.env.PATH_SERVER || '',
+    //FILES PATH
+    PATH_FILES_PROD: '\\\\192.168.1.229\\Desarrollos\\actuarsustentable\\',
+    PATH_FILES_DEV : `\\\\192.168.1.229\\Desarrollos\\actuarsustentable_dev\\`
 }
+

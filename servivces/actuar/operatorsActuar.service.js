@@ -59,8 +59,12 @@ class OperatorActuarService {
         return newOperator;
     }
 
-    async updateProfileImage(data){
+    async updateProfileImage(id, file){
+        const operator = await this.findOne(id);
         
+        const response = operator.update({ profileImage: file })
+
+        return response;
     }
 
     async update(id, changes){

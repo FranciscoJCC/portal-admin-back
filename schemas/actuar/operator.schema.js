@@ -5,7 +5,7 @@ const name = Joi.string().max(150);
 const lastName = Joi.string().max(100);
 const email = Joi.string().email().max(150);
 const type = Joi.string().valid("OPERADOR", "MANIOBRISTA");
-const createDate = Joi.date(); //.default(() => new Date(), 'current date')
+const createDate = Joi.date();
 const username = Joi.string().max(50);
 const password = Joi.string().max(80);
 const active = Joi.number().integer().valid(0, 1).default(1);
@@ -46,6 +46,7 @@ const updateOperatorActuarSchema = Joi.object({
     name: name,
     lastName: lastName,
     email: email,
+    type: type,
     username: username,
     password: password,
     active: active,
