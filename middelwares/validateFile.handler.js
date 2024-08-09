@@ -7,7 +7,6 @@ async function validateFileHandler(req, res, next){
     
     let pathFiles = config.NODE_ENV === "prod" ? config.PATH_FILES_PROD : config.PATH_FILES_DEV;
     let filePath = path.resolve(pathFiles + '' + file)
-    console.log("FILE PATH",filePath);
 
     await fs.access(filePath, fs.constants.F_OK, (err) => {
         if(err){

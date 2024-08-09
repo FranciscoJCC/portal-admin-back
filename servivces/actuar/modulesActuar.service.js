@@ -13,7 +13,6 @@ class ModuleActuarService {
         const active = query.active;
         const name = query.name;
 
-        console.log(active);
         let options = {
             where:{},
             //include: ['permissionsActuar'],

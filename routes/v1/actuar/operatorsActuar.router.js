@@ -1,4 +1,6 @@
 const express = require('express');
+const passport = require('passport');
+const verifyToken = require('../../../middelwares/verifyToken.handler');
 const validatorHandler = require('../../../middelwares/validatorHandler');
 const validateFileHandler = require('../../../middelwares/validateFile.handler');
 const { uploadFiles, returnPath } = require('../../../utils/multer');
@@ -9,18 +11,24 @@ const { getOperatorActuarSchema, createOperatorActuarSchema, updateOperatorActua
 const router = express.Router();
 const operatorActuarService = new OperatorActuarService();
 
-router.get('/', async(req, res, next) => {
-    try {
-        const users = await operatorActuarService.list(req.query);
+router.get('/', 
+    verifyToken,
+    passport.authenticate('jwt', { session: false }),
+    async(req, res, next) => {
+        try {
+            const users = await operatorActuarService.list(req.query);
 
-        res.status(200).json(users);
-    } catch (error) {
-        next(error);
+            res.status(200).json(users);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 router.post('/',
-    validatorHandler(createOperatorActuarSchema, 'body'), 
+    validatorHandler(createOperatorActuarSchema, 'body'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async(req, res, next) => {
         try {
             const data = req.body;
@@ -37,6 +45,8 @@ router.post('/',
 router.patch('/:id',
     validatorHandler(getOperatorActuarSchema, 'params'),
     validatorHandler(updateOperatorActuarSchema, 'body'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }),
     async(req, res, next) => {
         try {
             const { id } = req.params;
@@ -54,6 +64,8 @@ router.patch('/:id',
 router.patch('/updateProfileImage/:id',
     uploadFiles.array('files'),
     validatorHandler(getOperatorActuarSchema, 'params'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try {
             const { id } = req.params;
@@ -70,6 +82,8 @@ router.patch('/updateProfileImage/:id',
 
 router.post('/getProfileImage',
     validateFileHandler,
+    verifyToken,
+    passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try {
             const file = req.body.filename;

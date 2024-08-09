@@ -1,4 +1,6 @@
 const express = require('express');
+const passport = require('passport');
+const verifyToken = require('../../../middelwares/verifyToken.handler');
 const validatorHandler = require('../../../middelwares/validatorHandler');
 const ModuleActuarService = require('../../../servivces/actuar/modulesActuar.service');
 const { getModuleActuarSchema, createModuleActuarSchema, updateModuleActuarSchema } = require('../../../schemas/actuar/module.schema');
@@ -6,17 +8,23 @@ const { getModuleActuarSchema, createModuleActuarSchema, updateModuleActuarSchem
 const router = express.Router();
 const moduleActuarService = new ModuleActuarService();
 
-router.get('/', async(req, res, next) => {
-    try {
-        const modules = await moduleActuarService.list(req.query);
+router.get('/', 
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
+    async(req, res, next) => {
+        try {
+            const modules = await moduleActuarService.list(req.query);
 
-        res.status(200).json(modules);
-    } catch (error) {
-        next(error);
+            res.status(200).json(modules);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 router.get('/modulesWPermissions',
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async(req, res, next) => {
         try {
             const modulesWithPermissions = await moduleActuarService.listModulesWPermissions();
@@ -30,6 +38,8 @@ router.get('/modulesWPermissions',
 
 router.get('/:id',
     validatorHandler(getModuleActuarSchema, 'params'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async(req, res, next) => {
         try {
             const { id } = req.params;
@@ -45,6 +55,8 @@ router.get('/:id',
 
 router.post('/',
     validatorHandler(createModuleActuarSchema, 'body'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async (req, res, next) => {
         try {
             
@@ -62,6 +74,8 @@ router.post('/',
 router.patch('/:id',
     validatorHandler(getModuleActuarSchema, 'params'),
     validatorHandler(updateModuleActuarSchema, 'body'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async(req, res, next) => {
         try {
             const { id } = req.params;
@@ -78,6 +92,8 @@ router.patch('/:id',
 
 router.delete('/:id',
     validatorHandler(getModuleActuarSchema, 'params'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async(req, res, next) => {
         try {
             const { id } = req.params;

@@ -10,8 +10,8 @@ const router = express.Router();
 const userService = new UserService();
 
 router.get('/',
-    //verifyToken,
-    //passport.authenticate('jwt', { session: false }), 
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async(req, res, next) => {
         try {
             const users = await userService.list(req.query);
@@ -25,6 +25,8 @@ router.get('/',
 
 router.get('/:id',
     validatorHandler(getUserSchema, 'params'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async(req, res, next) => {
         try {
             const { id } = req.params;
@@ -40,6 +42,8 @@ router.get('/:id',
 
 router.post('/',
     validatorHandler(createUserSchema, 'body'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async (req, res, next) => {
         try {
             
@@ -57,6 +61,8 @@ router.post('/',
 router.patch('/:id',
     validatorHandler(getUserSchema, 'params'),
     validatorHandler(updateUserSchema, 'body'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async(req, res, next) => {
         try {
             const { id } = req.params;
@@ -73,6 +79,8 @@ router.patch('/:id',
 
 router.delete('/:id',
     validatorHandler(getUserSchema, 'params'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }), 
     async(req, res, next) => {
         try {
             const { id } = req.params;

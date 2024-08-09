@@ -1,4 +1,6 @@
 const express = require('express');
+const passport = require('passport');
+const verifyToken = require('../../../middelwares/verifyToken.handler');
 const validatorHandler = require('../../../middelwares/validatorHandler');
 const PermissionActuarService = require('../../../servivces/actuar/permissionsActuar.service');
 const { getPermissionActuarSchema, createPermissionActuarSchema, updatePermissionActuarSchema} = require('./../../../schemas/actuar/permission.schema');
@@ -6,18 +8,24 @@ const { getPermissionActuarSchema, createPermissionActuarSchema, updatePermissio
 const router = express.Router();
 const permissionActuarService = new PermissionActuarService();
 
-router.get('/', async(req, res, next) => {
-    try {
-        const permissions = await permissionActuarService.list(req.query);
+router.get('/', 
+    verifyToken,
+    passport.authenticate('jwt', { session: false }),
+    async(req, res, next) => {
+        try {
+            const permissions = await permissionActuarService.list(req.query);
 
-        res.status(200).json(permissions);
-    } catch (error) {
-        next(error);
+            res.status(200).json(permissions);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 router.get('/:id',
     validatorHandler(getPermissionActuarSchema, 'params'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }),
     async(req, res, next) => {
         try {
             const { id } = req.params;
@@ -33,6 +41,8 @@ router.get('/:id',
 
 router.post('/',
     validatorHandler(createPermissionActuarSchema, 'body'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }),
     async (req, res, next) => {
         try {
             
@@ -50,6 +60,8 @@ router.post('/',
 router.patch('/:id',
     validatorHandler(getPermissionActuarSchema, 'params'),
     validatorHandler(updatePermissionActuarSchema, 'body'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }),
     async(req, res, next) => {
         try {
             const { id } = req.params;
@@ -66,6 +78,8 @@ router.patch('/:id',
 
 router.delete('/:id',
     validatorHandler(getPermissionActuarSchema, 'params'),
+    verifyToken,
+    passport.authenticate('jwt', { session: false }),
     async(req, res, next) => {
         try {
             const { id } = req.params;
