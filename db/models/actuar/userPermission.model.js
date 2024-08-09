@@ -32,7 +32,7 @@ const UserPermissionActuarSchema = {
 
 class UserPermissionActuar extends Model {
     static associate(models){
-
+        
     }
 
     static config(sequelize){

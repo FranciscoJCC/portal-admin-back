@@ -68,7 +68,7 @@ router.patch('/updateProfileImage/:id',
     }
 )
 
-router.get('/getProfileImage',
+router.post('/getProfileImage',
     validateFileHandler,
     async (req, res, next) => {
         try {
@@ -79,6 +79,6 @@ router.get('/getProfileImage',
             next(error);
         }
     }
-)
+);
 
 module.exports = router;

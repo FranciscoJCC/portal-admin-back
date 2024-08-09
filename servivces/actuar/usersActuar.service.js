@@ -43,6 +43,54 @@ class UserActuarService {
         };
     }
 
+    async permissionsByUser(id, typeUser){
+        
+        //Todos los permisos que tiene un usuario
+        const permissions = await sequelizeActuar.models.UserPermissionActuar.findAll({
+            where : {
+                userId : {
+                    [Op.eq] : id
+                },
+                typeUser: {
+                    [Op.eq] : typeUser
+                }
+            }
+        });
+
+        //Todos los permisos activos, con modulo activo
+        const allPermissions = await sequelizeActuar.models.PermissionActuar.findAll({
+            where: {
+                status: {
+                    [Op.eq] : 1
+                }
+            },
+            include: [{
+                model : sequelizeActuar.models.ModuleActuar,
+                as: 'moduleActuar',
+                attributes: ["name", "status"],
+                where: {
+                    status: {
+                        [Op.eq] : 1
+                    }
+                }
+            }]
+        });
+
+        //Array de ids de los permisos que tiene el usuario
+        const userPermissionsIds = new Set(permissions.map(p => p.permissionId));
+
+        
+        //Agregamos un campo si tiene o no el permiso asignado
+        const result = allPermissions.map(permission => {
+            return {
+                ...permission.toJSON(),
+                hasPermission: userPermissionsIds.has(permission.id)
+            }
+        })
+
+        return result;
+    }
+
     async findOne(id){
         const user = await sequelizeActuar.models.UserActuar.findByPk(id);
 

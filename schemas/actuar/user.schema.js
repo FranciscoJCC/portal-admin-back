@@ -12,10 +12,16 @@ const active =  Joi.number().integer().valid(0,1).default(1);
 const updatestatus =  Joi.number().integer().min(0).default(0);
 const slack =  Joi.string().max(70);
 
+const typeUser = Joi.string().valid("user", "operator");
 
 const getUserActuarSchema = Joi.object({
     id: id.required()
 });
+
+const getUserPermissionsSchema = Joi.object({
+    id: id.required(),
+    typeUser: typeUser.required()
+})
 
 const createUserActuarSchema = Joi.object({
     name: name.required(),
@@ -40,6 +46,7 @@ const updateUserActuarSchema = Joi.object({
 
 module.exports = {
     getUserActuarSchema,
+    getUserPermissionsSchema,
     createUserActuarSchema,
     updateUserActuarSchema
 }
