@@ -220,5 +220,7 @@ package-lock.json
 # BDD
 #postgres_data
 mysql_data
+db/config.js
+/files
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,node,linux,macos
