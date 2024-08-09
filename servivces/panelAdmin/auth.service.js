@@ -33,7 +33,7 @@ class AuthService {
             role: 'admin' //Mejorar
         };
 
-        const token = jwt.sign(payload, config.JWT_TOKEN);
+        const token = jwt.sign(payload, config.JWT_TOKEN, { expiresIn: '8h'});
 
         return {
             user,
