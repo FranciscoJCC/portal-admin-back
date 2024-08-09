@@ -2,6 +2,7 @@ const express = require('express');
 const config = require('./config');
 const cors = require('cors');
 const routerApi = require('./routes/v1/index');
+const setupSwagger = require('./docs/swagger');
 
 var opts;
 var requiredHttps = 'http';
@@ -22,6 +23,8 @@ app.get('/api', (req, res) => {
 require('./utils/auth')
 //Router API    
 routerApi(app);
+//Swagger
+setupSwagger(app);
 
 
 if(config.NODE_ENV == 'dev'){
